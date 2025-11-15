@@ -4,28 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mens Fashions - Tailor Shop</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
+    <header class="premium-header">
         <div class="container">
             <div class="header-content">
-                <div>
+                <div class="logo-section">
                     <h1 class="logo">Mens Fashions</h1>
-                    <p class="tagline">Premium Tailoring Services</p>
+                    <p class="tagline">Crafting Excellence Since Day One</p>
                 </div>
                 <nav class="header-nav">
-                    <button class="nav-btn" onclick="showCustomerView()" id="customerViewBtn">Customer View</button>
-                    <button class="nav-btn" onclick="showAdminView()" id="adminViewBtn">Admin Panel</button>
+                    <button class="nav-btn" onclick="showCustomerView()" id="customerViewBtn">Shop</button>
+                    <button class="nav-btn" onclick="showAdminView()" id="adminViewBtn">Admin</button>
                 </nav>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <section class="hero">
-            <h2>Custom Tailored Shirts & Pants</h2>
-            <p>Select your preferred colors and get personalized matching suggestions</p>
+        <section class="hero premium-hero">
+            <div class="hero-content">
+                <h2 class="hero-title">Custom Tailored Excellence</h2>
+                <p class="hero-subtitle">Where Tradition Meets Modern Elegance</p>
+                <p class="hero-description">Select your preferred colors and discover perfectly matched combinations crafted just for you</p>
+            </div>
         </section>
 
         <section class="color-selection">
@@ -83,65 +86,19 @@
 
         <!-- Fashion Gallery Section -->
         <section class="fashion-gallery">
-            <h3>Our Fashion Collection</h3>
-            <p class="gallery-subtitle">See how our colors look in real style</p>
-            <div class="gallery-grid">
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="white-navy">
-                        <div class="placeholder-content">
-                            <p>👔 White Shirt + Navy Pant</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Classic Professional</p>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="navy-beige">
-                        <div class="placeholder-content">
-                            <p>👔 Navy Shirt + Beige Pant</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Sophisticated Look</p>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="black-gray">
-                        <div class="placeholder-content">
-                            <p>👔 Black Shirt + Gray Pant</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Modern Elegance</p>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="suit-navy">
-                        <div class="placeholder-content">
-                            <p>🤵 Navy Suit</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Formal Suit</p>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="lightblue-gray">
-                        <div class="placeholder-content">
-                            <p>👔 Light Blue + Gray</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Casual Professional</p>
-                </div>
-                <div class="gallery-item">
-                    <div class="image-placeholder fashion-image" data-outfit="suit-black">
-                        <div class="placeholder-content">
-                            <p>🤵 Black Suit</p>
-                            <p class="placeholder-note">Add your AI-generated image here</p>
-                        </div>
-                    </div>
-                    <p class="gallery-label">Premium Formal</p>
+            <div class="gallery-header">
+                <h3>Our Fashion Collection</h3>
+                <p class="gallery-subtitle">Crafted with precision, styled with elegance</p>
+            </div>
+            <div class="gallery-grid" id="fashionGalleryGrid">
+                <!-- Images will be dynamically loaded from localStorage -->
+            </div>
+            <div class="gallery-empty" id="galleryEmpty" style="display: none;">
+                <div class="empty-state">
+                    <p>📸 No images in gallery yet</p>
+                    <p class="empty-hint">Go to Admin Panel → Image Gallery to upload images</p>
                 </div>
             </div>
-            <p class="gallery-instruction">💡 <strong>Note:</strong> Replace the placeholder divs above with your AI-generated images. Use &lt;img src="image.jpg" alt="Description"&gt; tags.</p>
         </section>
 
         <section class="order-form" id="orderForm" style="display: none;">
@@ -259,22 +216,29 @@
 
         <!-- Admin Panel Section -->
         <section class="admin-panel" id="adminPanel" style="display: none;">
-            <h3>Order Management</h3>
-            <div class="admin-controls">
-                <div class="search-box">
-                    <input type="text" id="searchOrders" placeholder="Search orders by name, phone, or email..." onkeyup="filterOrders()">
-                </div>
-                <div class="stats">
-                    <div class="stat-card">
-                        <span class="stat-number" id="totalOrders">0</span>
-                        <span class="stat-label">Total Orders</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-number" id="pendingOrders">0</span>
-                        <span class="stat-label">Pending</span>
-                    </div>
-                </div>
+            <div class="admin-tabs">
+                <button class="tab-btn active" onclick="showAdminTab('orders')" id="ordersTab">Orders</button>
+                <button class="tab-btn" onclick="showAdminTab('images')" id="imagesTab">Image Gallery</button>
             </div>
+
+            <!-- Orders Tab -->
+            <div class="admin-tab-content" id="ordersTabContent">
+                <h3>Order Management</h3>
+                <div class="admin-controls">
+                    <div class="search-box">
+                        <input type="text" id="searchOrders" placeholder="Search orders by name, phone, or email..." onkeyup="filterOrders()">
+                    </div>
+                    <div class="stats">
+                        <div class="stat-card">
+                            <span class="stat-number" id="totalOrders">0</span>
+                            <span class="stat-label">Total Orders</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="pendingOrders">0</span>
+                            <span class="stat-label">Pending</span>
+                        </div>
+                    </div>
+                </div>
             <div class="orders-table-container">
                 <table class="orders-table" id="ordersTable">
                     <thead>
@@ -297,6 +261,53 @@
                 </table>
                 <div class="no-orders" id="noOrders" style="display: none;">
                     <p>No orders found. Orders will appear here once customers place them.</p>
+                </div>
+            </div>
+            </div>
+
+            <!-- Image Gallery Tab -->
+            <div class="admin-tab-content" id="imagesTabContent" style="display: none;">
+                <h3>Image Gallery Management</h3>
+                <div class="image-upload-section">
+                    <h4>Upload New Image</h4>
+                    <div class="upload-area">
+                        <input type="file" id="imageUpload" accept="image/*" onchange="handleImageUpload(event)" style="display: none;">
+                        <label for="imageUpload" class="upload-label">
+                            <div class="upload-icon">📷</div>
+                            <p>Click to upload or drag and drop</p>
+                            <p class="upload-hint">PNG, JPG, WEBP up to 5MB</p>
+                        </label>
+                    </div>
+                    <div class="upload-form" id="uploadForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="imageTitle">Image Title *</label>
+                            <input type="text" id="imageTitle" placeholder="e.g., White Shirt + Navy Pant" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageCategory">Category</label>
+                            <select id="imageCategory">
+                                <option value="shirt-pant">Shirt + Pant</option>
+                                <option value="suit">Suit</option>
+                                <option value="formal">Formal Wear</option>
+                                <option value="casual">Casual Wear</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="imageDescription">Description</label>
+                            <textarea id="imageDescription" rows="2" placeholder="Brief description of the outfit..."></textarea>
+                        </div>
+                        <div class="upload-preview" id="uploadPreview"></div>
+                        <div class="upload-actions">
+                            <button type="button" class="btn-secondary" onclick="cancelUpload()">Cancel</button>
+                            <button type="button" class="btn-primary" onclick="saveUploadedImage()">Save Image</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="gallery-management">
+                    <h4>Gallery Images</h4>
+                    <div class="gallery-grid-admin" id="galleryGridAdmin">
+                        <!-- Images will be loaded here -->
+                    </div>
                 </div>
             </div>
         </section>

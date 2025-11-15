@@ -120,6 +120,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize view (default to customer view)
     showCustomerView();
+    
+    // Load fashion gallery on page load
+    loadFashionGallery();
 });
 
 function showSuggestions(shirtColor, shirtColorName) {
@@ -310,12 +313,16 @@ function showCustomerView() {
     document.getElementById('adminPanel').style.display = 'none';
     
     // Show customer sections
-    document.querySelector('.hero').style.display = 'block';
+    document.querySelector('.premium-hero').style.display = 'block';
     document.querySelector('.color-selection').style.display = 'block';
+    document.querySelector('.fashion-gallery').style.display = 'block';
     
     // Update nav buttons
     document.getElementById('customerViewBtn').classList.add('active');
     document.getElementById('adminViewBtn').classList.remove('active');
+    
+    // Load gallery images
+    loadFashionGallery();
     
     // Scroll to top
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -323,11 +330,12 @@ function showCustomerView() {
 
 function showAdminView() {
     // Hide customer sections
-    document.querySelector('.hero').style.display = 'none';
+    document.querySelector('.premium-hero').style.display = 'none';
     document.querySelector('.color-selection').style.display = 'none';
     document.getElementById('suggestionsSection').style.display = 'none';
     document.getElementById('orderForm').style.display = 'none';
     document.getElementById('orderSuccess').style.display = 'none';
+    document.querySelector('.fashion-gallery').style.display = 'none';
     
     // Show admin panel
     document.getElementById('adminPanel').style.display = 'block';
@@ -336,8 +344,8 @@ function showAdminView() {
     document.getElementById('adminViewBtn').classList.add('active');
     document.getElementById('customerViewBtn').classList.remove('active');
     
-    // Load and display orders
-    loadOrders();
+    // Load and display orders (default tab)
+    showAdminTab('orders');
     
     // Scroll to admin panel
     document.getElementById('adminPanel').scrollIntoView({ behavior: 'smooth' });
@@ -546,6 +554,174 @@ window.onclick = function(event) {
     const modal = document.getElementById('editOrderModal');
     if (event.target === modal) {
         closeEditModal();
+    }
+}
+
+// Image Management Functions
+let currentUploadedFile = null;
+
+function getGalleryImages() {
+    const images = localStorage.getItem('mensFashionsGallery');
+    return images ? JSON.parse(images) : [];
+}
+
+function saveGalleryImages(images) {
+    localStorage.setItem('mensFashionsGallery', JSON.stringify(images));
+}
+
+function handleImageUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    // Check file size (5MB limit)
+    if (file.size > 5 * 1024 * 1024) {
+        alert('Image size must be less than 5MB');
+        return;
+    }
+    
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+        alert('Please upload an image file');
+        return;
+    }
+    
+    currentUploadedFile = file;
+    
+    // Show preview
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const preview = document.getElementById('uploadPreview');
+        preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+        document.getElementById('uploadForm').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+}
+
+function cancelUpload() {
+    currentUploadedFile = null;
+    document.getElementById('imageUpload').value = '';
+    document.getElementById('uploadPreview').innerHTML = '';
+    document.getElementById('uploadForm').style.display = 'none';
+    document.getElementById('imageTitle').value = '';
+    document.getElementById('imageDescription').value = '';
+}
+
+function saveUploadedImage() {
+    if (!currentUploadedFile) {
+        alert('Please select an image first');
+        return;
+    }
+    
+    const title = document.getElementById('imageTitle').value.trim();
+    if (!title) {
+        alert('Please enter an image title');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const images = getGalleryImages();
+        const newImage = {
+            id: Date.now().toString(),
+            title: title,
+            category: document.getElementById('imageCategory').value,
+            description: document.getElementById('imageDescription').value.trim(),
+            imageData: e.target.result,
+            uploadedAt: new Date().toISOString()
+        };
+        
+        images.push(newImage);
+        saveGalleryImages(images);
+        
+        alert('Image saved successfully!');
+        cancelUpload();
+        loadGalleryImages();
+        loadFashionGallery();
+    };
+    reader.readAsDataURL(currentUploadedFile);
+}
+
+function loadGalleryImages() {
+    const images = getGalleryImages();
+    const grid = document.getElementById('galleryGridAdmin');
+    
+    if (images.length === 0) {
+        grid.innerHTML = '<p style="text-align: center; color: #666; padding: 40px;">No images uploaded yet. Upload your first image above!</p>';
+        return;
+    }
+    
+    grid.innerHTML = images.map(image => `
+        <div class="gallery-item-admin">
+            <img src="${image.imageData}" alt="${image.title}">
+            <div class="gallery-item-info">
+                <h5>${image.title}</h5>
+                <p><strong>Category:</strong> ${image.category}</p>
+                ${image.description ? `<p>${image.description}</p>` : ''}
+                <div class="gallery-item-actions">
+                    <button class="btn-delete-image" onclick="deleteGalleryImage('${image.id}')">Delete</button>
+                </div>
+            </div>
+        </div>
+    `).join('');
+}
+
+function deleteGalleryImage(imageId) {
+    if (!confirm('Are you sure you want to delete this image?')) {
+        return;
+    }
+    
+    const images = getGalleryImages();
+    const filtered = images.filter(img => img.id !== imageId);
+    saveGalleryImages(filtered);
+    
+    alert('Image deleted successfully!');
+    loadGalleryImages();
+    loadFashionGallery();
+}
+
+function loadFashionGallery() {
+    const images = getGalleryImages();
+    const grid = document.getElementById('fashionGalleryGrid');
+    const empty = document.getElementById('galleryEmpty');
+    
+    if (images.length === 0) {
+        grid.style.display = 'none';
+        empty.style.display = 'block';
+        return;
+    }
+    
+    grid.style.display = 'grid';
+    empty.style.display = 'none';
+    
+    grid.innerHTML = images.map(image => `
+        <div class="gallery-item">
+            <div class="fashion-image">
+                <img src="${image.imageData}" alt="${image.title}">
+            </div>
+            <p class="gallery-label">${image.title}</p>
+            ${image.description ? `<p style="color: #666; font-size: 0.9em; margin-top: 5px;">${image.description}</p>` : ''}
+        </div>
+    `).join('');
+}
+
+function showAdminTab(tab) {
+    // Hide all tab contents
+    document.getElementById('ordersTabContent').style.display = 'none';
+    document.getElementById('imagesTabContent').style.display = 'none';
+    
+    // Remove active class from all tabs
+    document.getElementById('ordersTab').classList.remove('active');
+    document.getElementById('imagesTab').classList.remove('active');
+    
+    // Show selected tab
+    if (tab === 'orders') {
+        document.getElementById('ordersTabContent').style.display = 'block';
+        document.getElementById('ordersTab').classList.add('active');
+        loadOrders();
+    } else if (tab === 'images') {
+        document.getElementById('imagesTabContent').style.display = 'block';
+        document.getElementById('imagesTab').classList.add('active');
+        loadGalleryImages();
     }
 }
 

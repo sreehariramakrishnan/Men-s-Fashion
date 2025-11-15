@@ -4,11 +4,13 @@
     box-sizing: border-box;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;600&display=swap');
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    line-height: 1.6;
-    color: #333;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.8;
+    color: #2c2c2c;
+    background: #ffffff;
     min-height: 100vh;
 }
 
@@ -16,6 +18,17 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
+}
+
+.premium-header {
+    background: #1a1a1a;
+    color: #ffffff;
+    padding: 25px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #d4af37;
 }
 
 header {
@@ -41,38 +54,114 @@ header {
 }
 
 .nav-btn {
-    background: #667eea;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    background: transparent;
+    color: #d4af37;
+    border: 2px solid #d4af37;
+    padding: 12px 30px;
+    border-radius: 0;
     cursor: pointer;
-    font-size: 0.9em;
-    transition: background 0.3s ease;
+    font-size: 0.95em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    margin-left: 10px;
 }
 
 .nav-btn:hover {
-    background: #5568d3;
+    background: #d4af37;
+    color: #1a1a1a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(212, 175, 55, 0.4);
 }
 
 .nav-btn.active {
-    background: #764ba2;
+    background: #d4af37;
+    color: #1a1a1a;
 }
 
 .logo {
-    font-size: 2.5em;
-    color: #667eea;
-    font-weight: bold;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    color: #d4af37;
+    font-weight: 700;
     margin-bottom: 5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.premium-header .logo {
+    color: #d4af37;
+    font-size: 2.5em;
 }
 
 .tagline {
-    color: #666;
-    font-size: 1.1em;
+    color: #999;
+    font-size: 0.95em;
+    font-style: italic;
+    letter-spacing: 1px;
+}
+
+.premium-header .tagline {
+    color: #cccccc;
 }
 
 main {
     padding: 40px 20px;
+}
+
+.premium-hero {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #ffffff;
+    padding: 100px 40px;
+    margin-bottom: 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.premium-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0 50 L100 50 M50 0 L50 100" stroke="rgba(212,175,55,0.1)" stroke-width="1"/></svg>');
+    opacity: 0.3;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #d4af37;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+.hero-subtitle {
+    font-size: 1.8em;
+    font-weight: 300;
+    margin-bottom: 15px;
+    color: #ffffff;
+    font-style: italic;
+}
+
+.hero-description {
+    font-size: 1.1em;
+    color: #cccccc;
+    line-height: 1.8;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .hero {
@@ -743,13 +832,30 @@ footer {
 
 /* Fashion Gallery Styles */
 .fashion-gallery {
-    margin-top: 40px;
+    margin-top: 60px;
+    padding: 60px 40px;
+    background: #ffffff;
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.gallery-header h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8em;
+    color: #1a1a1a;
+    margin-bottom: 15px;
+    font-weight: 700;
+    letter-spacing: 2px;
 }
 
 .gallery-subtitle {
     text-align: center;
     color: #666;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    font-style: italic;
     margin-bottom: 30px;
 }
 
@@ -809,14 +915,202 @@ footer {
     font-size: 1em;
 }
 
-.gallery-instruction {
-    margin-top: 30px;
-    padding: 15px;
-    background: #fff3cd;
-    border-left: 4px solid #ffc107;
-    border-radius: 5px;
-    color: #856404;
+.gallery-empty {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.empty-state {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.empty-state p {
+    font-size: 1.2em;
+    color: #666;
+    margin: 10px 0;
+}
+
+.empty-hint {
     font-size: 0.9em;
+    color: #999;
+    font-style: italic;
+}
+
+/* Admin Tabs */
+.admin-tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1em;
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tab-btn:hover {
+    color: #d4af37;
+}
+
+.tab-btn.active {
+    color: #d4af37;
+    border-bottom-color: #d4af37;
+}
+
+.admin-tab-content {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Image Upload Styles */
+.image-upload-section {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: #f9f9f9;
+    border-radius: 10px;
+}
+
+.upload-area {
+    border: 3px dashed #d4af37;
+    border-radius: 10px;
+    padding: 40px;
+    text-align: center;
+    background: #ffffff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area:hover {
+    border-color: #b8941f;
+    background: #fafafa;
+}
+
+.upload-label {
+    display: block;
+    cursor: pointer;
+}
+
+.upload-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+}
+
+.upload-label p {
+    font-size: 1.1em;
+    color: #333;
+    margin: 5px 0;
+}
+
+.upload-hint {
+    font-size: 0.9em;
+    color: #999;
+}
+
+.upload-form {
+    margin-top: 30px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+.upload-preview {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.upload-preview img {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.upload-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.gallery-grid-admin {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.gallery-item-admin {
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item-admin:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item-admin img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.gallery-item-info {
+    padding: 15px;
+}
+
+.gallery-item-info h5 {
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 5px;
+    font-size: 1.1em;
+}
+
+.gallery-item-info p {
+    font-size: 0.9em;
+    color: #666;
+    margin: 5px 0;
+}
+
+.gallery-item-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.btn-delete-image {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: background 0.3s ease;
+    width: 100%;
+}
+
+.btn-delete-image:hover {
+    background: #c82333;
 }
 
 /* Replace placeholder with actual image */
